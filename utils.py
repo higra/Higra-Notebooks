@@ -1,17 +1,7 @@
-import time
-
-
-def imshow2(image):
-    dpi = 80.0
-    h, w = image.shape[:2]
-    figsize = (h / dpi, w / dpi)
-    print(figsize)
-    fig = plt.figure(figsize=(h / dpi, w / dpi))
-    fig.figimage(image)
-    plt.show()
-
-
 def imshow(image, click_event=None):
+    """
+    Show an image at true scale
+    """
     import matplotlib.pyplot as plt
     dpi = 80
     margin = 0.5  # (5% of the width/height of the figure...)
@@ -31,17 +21,36 @@ def imshow(image, click_event=None):
     plt.show()
     
     return fig, ax
-    
- 
-
-
-def tic():
-    global startTime_for_tictoc
-    startTime_for_tictoc = time.time()
-
-
-def toc():
-    if 'startTime_for_tictoc' in globals():
-        print("Elapsed time is ", str(time.time() - startTime_for_tictoc), " seconds.")
+   
+def get_sed_model_file():
+    import os.path
+    default_path = 'data/opencv_sed_model.yml.gz'
+    if os.path.isfile(default_path):
+        return default_path
     else:
-        print("Toc: start time not set")
+        import urllib.request as request
+        dl_path = './opencv_sed_model.yml.gz'
+        request.urlretrieve('https://github.com/higra/Higra-Notebooks/raw/master/data/opencv_sed_model.yml.gz', dl_path)
+        return dl_path
+    
+def locate_resource(name):
+    import os.path
+    default_path = 'data/' + name
+    if os.path.isfile(default_path):
+        return default_path
+    else:
+        return 'https://github.com/higra/Higra-Notebooks/raw/master/data/' + name
+    
+def enable_plotly_in_cell():
+    """
+    To be used in colab: this method pre-populates the outputframe with the configuration that Plotly expects 
+    and must be executed for every cell which is displaying a Plotly graph.
+    
+    https://colab.research.google.com/notebooks/charts.ipynb#scrollTo=niTJd49yO4xf
+    """
+    import IPython
+    from plotly.offline import init_notebook_mode
+    display(IPython.core.display.HTML('''
+        <script src="/static/components/requirejs/require.js"></script>
+    '''))
+    init_notebook_mode(connected=False)
