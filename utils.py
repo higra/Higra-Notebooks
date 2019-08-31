@@ -1,4 +1,4 @@
-def imshow(image, click_event=None):
+def imshow(image, click_event=None, cmap=None):
     """
     Show an image at true scale
     """
@@ -15,7 +15,7 @@ def imshow(image, click_event=None):
     # Make the axis the right size...
     ax = fig.add_axes([0, 0, 1, 1])
 
-    ax.imshow(image, interpolation='none')
+    ax.imshow(image, interpolation='none', cmap=cmap)
     
     plt.axis('off')
     plt.show()
