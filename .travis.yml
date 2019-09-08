@@ -1,0 +1,32 @@
+language: python
+dist: trusty
+branches:
+  only:
+  - master
+matrix:
+  include:
+    - os: linux
+
+env:
+  global:
+    - MINCONDA_VERSION="latest"
+    - MINCONDA_LINUX="Linux-x86_64"
+
+ 
+install:
+    # Download and update miniconda
+    - MINCONDA_OS=$MINCONDA_LINUX;
+    - wget "http://repo.continuum.io/miniconda/Miniconda3-$MINCONDA_VERSION-$MINCONDA_OS.sh" -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    - conda install -y nb_conda nbconvert jupyter_client imageio matplotlib scipy scikit-learn scikit-image ipywidgets
+    - conda update -y nb_conda nb_conda_kernels 
+    - conda install -y -c conda-forge opencv 
+    - pip install higra
+    
+script:
+    - pwd
+    - whoami
+    - ls -l data
+    - python test_notebooks.py
