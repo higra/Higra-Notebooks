@@ -20,7 +20,7 @@ install:
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
     - hash -r
-    - conda install -y nb_conda nbconvert jupyter_client imageio matplotlib scipy scikit-learn scikit-image ipywidgets
+    - conda install -y nb_conda nbconvert jupyter_client imageio matplotlib scipy scikit-learn scikit-image ipywidgets astropy
     - conda update -y nb_conda nb_conda_kernels 
     - conda install -y -c conda-forge opencv 
     - pip install higra

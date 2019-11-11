@@ -22,6 +22,7 @@ def imshow(image, click_event=None, cmap=None):
     
     return fig, ax
    
+    
 def get_sed_model_file():
     import os.path
     default_path = 'data/opencv_sed_model.yml.gz'
@@ -33,6 +34,7 @@ def get_sed_model_file():
         request.urlretrieve('https://github.com/higra/Higra-Notebooks/raw/master/data/opencv_sed_model.yml.gz', dl_path)
         return dl_path
     
+    
 def locate_resource(name):
     import os.path
     default_path = 'data/' + name
@@ -40,6 +42,7 @@ def locate_resource(name):
         return default_path
     else:
         return 'https://github.com/higra/Higra-Notebooks/raw/master/data/' + name
+    
     
 def enable_plotly_in_cell():
     """
@@ -54,3 +57,38 @@ def enable_plotly_in_cell():
         <script src="/static/components/requirejs/require.js"></script>
     '''))
     init_notebook_mode(connected=False)
+
+    
+def saturate_max(array, max_saturation=0.005, normalize=True):
+    import numpy as np
+    values = np.ravel(array)
+    
+    sorted_values = np.sort(values)
+    max_v = sorted_values[min(len(sorted_values) - 1, int((1 - max_saturation) * len(sorted_values)))]
+    saturated_im = array.copy()
+    saturated_im[saturated_im > max_v] = max_v
+    
+    if normalize:
+        minv = np.min(saturated_im)
+        maxv = np.max(saturated_im)
+        saturated_im = (saturated_im - minv) / (maxv - minv) 
+        
+    return saturated_im
+
+def get_tile_images(image, width, height):
+    import numpy as np
+    _nrows, _ncols = image.shape
+    _size = image.size
+    _strides = image.strides
+
+    nrows, _m = divmod(_nrows, height)
+    ncols, _n = divmod(_ncols, width)
+    if _m != 0 or _n != 0:
+        image = image[:-_m,:-_n]
+
+    return np.lib.stride_tricks.as_strided(
+        np.ravel(image),
+        shape=(nrows, ncols, height, width),
+        strides=(width * _strides[1], height * _strides[0], *_strides),
+        writeable=False
+    )
