@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/higra/Higra-Notebooks.svg?branch=master)](https://travis-ci.org/higra/Higra-Notebooks)
+[![Build Status](https://travis-ci.com/higra/Higra-Notebooks.svg?branch=master)](https://travis-ci.com/higra/Higra-Notebooks)
 
 # Higra-Notebooks
 
