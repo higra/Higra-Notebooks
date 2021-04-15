@@ -75,6 +75,7 @@ def saturate_max(array, max_saturation=0.005, normalize=True):
         
     return saturated_im
 
+
 def get_tile_images(image, width, height):
     import numpy as np
     _nrows, _ncols = image.shape
@@ -92,3 +93,20 @@ def get_tile_images(image, width, height):
         strides=(width * _strides[1], height * _strides[0], *_strides),
         writeable=False
     )
+
+
+def imread(filename):
+    """
+    Simple wrapper around imageio.imread to avoid issues with image reading from url
+    see note at https://imageio.readthedocs.io/en/stable/userapi.html
+    """
+    import imageio
+    im = None
+    if filename.startswith("http"):
+        dotposition = filename.rfind(".")
+        if dotposition != -1:
+            extension = filename[dotposition:]
+            im = imageio.imread(imageio.core.urlopen(filename).read(), extension)
+    if im is None:
+        im = imageio.imread(filename)
+    return im
