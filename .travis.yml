@@ -1,8 +1,8 @@
 language: python
 dist: bionic
-#branches:
-#  only:
-#  - master
+branches:
+  only:
+    - master
 matrix:
   include:
     - os: linux
@@ -23,10 +23,12 @@ install:
     - conda install -y nb_conda nbconvert jupyter_client imageio matplotlib scipy scikit-learn scikit-image ipywidgets astropy
     - conda update -y nb_conda nb_conda_kernels 
     - conda install -y -c conda-forge opencv 
-    - pip install higra
+    - $HOME/miniconda/bin/pip3 install higra
     
 script:
     - pwd
     - whoami
     - ls -l data
+    - python --version
+    - pip --version
     - python test_notebooks.py
