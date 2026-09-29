@@ -1,0 +1,45 @@
+name: Execute notebooks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  notebooks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+        shell: bash -el {0}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python environment
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: notebooks-ci
+          create-args: >-
+            python=3.14.7
+            nbconvert
+            nbformat
+            jupyter_client
+            ipykernel
+            imageio
+            matplotlib
+            scipy
+            scikit-learn
+            scikit-image
+            ipywidgets
+            astropy
+            opencv
+            igl
+            meshplot
+          init-shell: bash
+
+      - name: Install Higra and trimesh
+        run: python -m pip install higra 'trimesh[easy]'
+
+      - name: Execute notebook tests
+        run: python test_notebooks.py
