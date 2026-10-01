@@ -26,16 +26,6 @@ jobs:
             nbformat
             jupyter_client
             ipykernel
-            imageio
-            matplotlib
-            scipy
-            scikit-learn
-            scikit-image
-            ipywidgets
-            astropy
-            opencv
-            igl
-            meshplot
           init-shell: bash
 
       - name: Install Higra and trimesh
